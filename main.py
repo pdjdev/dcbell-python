@@ -70,5 +70,5 @@ while(1):
         print ("===========작업 끝============")
         break
   
-  print("대기중... (" + updTime + "초)")
+  print("대기중... (" + str(updTime) + "초)")
   time.sleep(updTime)

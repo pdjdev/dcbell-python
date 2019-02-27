@@ -20,7 +20,7 @@ html = urlopen('https://gall.dcinside.com/mgallery/board/lists?id=' + gallid).re
 
 ---
 
-[^1]: updTime은 초 단위이며, 부하를 막기 위해 최소 1분 이상으로 지정해 주시기 바랍니다.
+\[^1]: updTime은 초 단위이며, 부하를 막기 위해 최소 1분 이상으로 지정해 주시기 바랍니다.
  
 
 

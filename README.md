@@ -18,7 +18,8 @@ html = urlopen('https://gall.dcinside.com/mgallery/board/lists?id=' + gallid).re
 ```
 3. 중요!! 현재 코드에서는 마이너 갤러리의 일반 글 기준으로 URL이 설정되어 있습니다. 정식 갤러리의 알림을 받고 싶으시거나 개념글, 특정 키워드 검색글 등을 받고 싶으신 경우 위 줄의 URL을 고쳐 주세요.<br/><br/>
 
-![img2](image2.png)<br/>
+![img2](image2.png)
+
 4. 알림 받을 채널 링크로 가 1.에서 생성했던 봇을 관리자로 추가한 뒤, 코드를 실행하여 알림이 정상적으로 오는지 확인합니다.
 <br/><br/>
 

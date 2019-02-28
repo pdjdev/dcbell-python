@@ -8,10 +8,7 @@ import requests
 
 gallid = "euca" #갤러리 ID 입력
 
-print ("========DCBELL 설정 값========")
 print ("갤러리ID: " + gallid)
-print ("업데이트 간격: " + str(updTime) + "초")
-print ("==============================")
 print("요청시작...")
 
 html = urlopen('https://gall.dcinside.com/mgallery/board/lists?id=' + gallid).read()

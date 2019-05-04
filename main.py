@@ -1,7 +1,5 @@
 from bs4 import BeautifulSoup
-from urllib.request import urlopen
-import requests
-import time
+import urllib.request, requests, time
 
 def sendTelegramMsg(APIKey, chatID, text):
   r = requests.get("https://api.telegram.org/bot"

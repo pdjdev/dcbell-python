@@ -8,10 +8,12 @@
 ## 사용 방법
 1. BotFather를 통해 텔레그램 로봇을 생성하고, 알림을 받기 원하는 공개 채널도 생성하여 API 토큰과 채널 링크(@포함)를 준비합니다.<br/><br/>
 ```
-gallid = "galleryid" #갤러리 ID 입력
-TelAPI = "123456789:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" #텔레그램 봇키
-TelChan = "@channelid" #채널 주소
-updTime = 60
+# 텔레그램 설정
+TelAPI = "123456789:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" # 텔레그램 봇키
+TelChan = "@channelid" # 주소
+# 갤러리 설정
+gallid = "galleryid" # 갤러리 ID
+updTime = 60 # 업데이트 주기 (초)
 ```
 2. 1.의 내용을 바탕으로 main.py 에서 위의 값을 원하는 설정으로 바꿉니다.
 <br/><sup>updTime은 초 단위이며, 부하를 막기 위해 최소 1분 이상으로 지정해 주시기 바랍니다.</sup> <br/><br/>

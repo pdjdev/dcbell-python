@@ -68,7 +68,7 @@ while(1):
                     print ("======새 글이 있습니다!=======")
                     print ("│글번호: " + postnum)
                     print ("│글제목: " + title)
-                    print ("|닉네임(아이피): " + name + " (" + ip + ")")
+                    print ("│닉네임(아이피): " + name + " (" + ip + ")")
                     print ("│푸시 보내는 중...")
 
                     sendTelegramMsg(TelAPI, TelChan, "*" + gallid + " 갤러리 새 글*\n"

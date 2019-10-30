@@ -20,6 +20,9 @@ updTime = 60 # 업데이트 주기 (초)
 # 마지막 알림 게시글 번호
 prev_postnum = 0
 
+# 시간 표시 형식
+tType = "%Y-%m-%d %H-%M-%S"
+
 print ("========DCBELL 설정 값========")
 print ("갤러리ID: " + gallid)
 print ("Telegram 채널ID: " + TelChan)

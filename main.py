@@ -1,6 +1,12 @@
 from bs4 import BeautifulSoup
 import urllib.request, requests, time
 
+# 헤더에 유저 에이전트 값 넣어야 요청이 제대로 옴
+hdr = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36',
+       'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+       'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3', 'Accept-Encoding': 'none',
+       'Accept-Language': 'en-US,en;q=0.8', 'Connection': 'keep-alive'}         
+
 # 텔레그램 봇 요청
 def sendTelegramMsg(APIKey, chatID, text):
   r = requests.get("https://api.telegram.org/bot"
@@ -9,22 +15,21 @@ def sendTelegramMsg(APIKey, chatID, text):
                    + text + "&parse_mode=Markdown")
   return r
 
+# ================= 사용 전 직접 설정해 주어야 하는 부분 =================
+
 # 텔레그램 설정
 TelAPI = "123456789:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" # 텔레그램 봇키
 TelChan = "@channelid" # 주소
 
-# 갤러리 설정
-gallid = "galleryid" # 갤러리 ID
+# 갤러리 설정 {'갤러리ID': 최근 글 번호}
+gall = {'gall1':0, 'gall2':0}
 updTime = 60 # 업데이트 주기 (초)
 
-# 마지막 알림 게시글 번호
-prev_postnum = 0
+# ========================================================================
 
 # 시간 표시 형식
 tType = "%Y-%m-%d %H-%M-%S"
-
 print ("========DCBELL 설정 값========")
-print ("갤러리ID: " + gallid)
 print ("Telegram 채널ID: " + TelChan)
 print ("업데이트 간격: " + str(updTime) + "초")
 print ("==============================")
@@ -32,58 +37,66 @@ print ("==============================")
 
 while(1):
 
-    print("[" + time.strftime(tType) + "] 요청시작...")
+    print("[" + time.strftime(tType) + "] 요청 시작...")
 
     try:
-        # 헤더에 유저 에이전트 값 넣어야 요청이 제대로 옴
-        hdr = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36', 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8', 'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.3', 'Accept-Encoding': 'none', 'Accept-Language': 'en-US,en;q=0.8', 'Connection': 'keep-alive'}
-        req = urllib.request.Request("https://gall.dcinside.com/mgallery/board/lists?id=" + gallid, headers = hdr)
-        html = urllib.request.urlopen(req).read()
+        
+        for g in gall.items():
+            
+            gallid = g[0] # 갤러리 ID
+            prev_postnum = g[1] # 마지막 알림 게시글 번호
 
-        soup = BeautifulSoup(html, "html.parser")
-        link = soup.find_all("tr", { "class" : "ub-content us-post"})
+            print("[" + time.strftime(tType) + "] " + gallid + " 조회 시작...")
 
-        for m in link:
+            #마이너, 정식갤러리 판별
+            link = 'https://gall.dcinside.com/board/lists/?id=' + gallid
+            r = requests.get(link, headers = hdr).text
+            print('갤러리 형식:', end=' ')
 
-            # 게시글 제목
-            tmp = m.find("td", { "class" : "gall_tit ub-word"})
+            #마이너 갤러리일 경우
+            if 'location.replace' in r: link = link.replace('board/','mgallery/board/'); print('마이너')
+            else: print('정식')
+                      
+            req = urllib.request.Request(link, headers = hdr)
+            html = urllib.request.urlopen(req).read()
+            soup = BeautifulSoup(html, "html.parser")
+            link = soup.find_all("tr", { "class" : "ub-content us-post"})
 
-            if "<b>" not in str(tmp):
-                title = tmp.a.text
+            for m in link:
 
-                # 게시글 번호
-                postnum = m.find("td", { "class" : "gall_num"}).text
+                # 게시글 제목
+                tmp = m.find("td", { "class" : "gall_tit ub-word"})
 
-                # 게시글 작성자 (유동은 IP)
-                tmp = m.find("td", { "class" : "gall_writer ub-writer"})
-                name = tmp.find("em").text
-                ip = tmp.find("span", { "class" : "ip"})
+                if "<b>" not in str(tmp):
+                    title = tmp.a.text                
+                    postnum = m.find("td", { "class" : "gall_num"}).text # 게시글 번호   
+                    tmp = m.find("td", { "class" : "gall_writer ub-writer"}) # 게시글 작성자 (유동은 IP)
+                    name = tmp.find("em").text
+                    ip = tmp.find("span", { "class" : "ip"})
 
-                if ip is not None:
-                    ip = ip.text
-                else:
-                    ip = "고닉"
+                    if ip is not None: ip = ip.text
+                    else: ip = "고닉"
 
-                if (int(postnum) > int(prev_postnum)):
-                    print ("======새 글이 있습니다!=======")
-                    print ("│글번호: " + postnum)
-                    print ("│글제목: " + title)
-                    print ("│닉네임(아이피): " + name + " (" + ip + ")")
-                    print ("│푸시 보내는 중...")
+                    # 아래에 원하는 조건문 넣어도됨
+                    if (int(postnum) > int(prev_postnum)):
+                        print ("======새 글이 있습니다!=======")
+                        print ("│갤러리: " + gallid)
+                        print ("│글번호: " + postnum)
+                        print ("│글제목: " + title)
+                        print ("│닉네임(아이피): " + name + " (" + ip + ")")
+                        print ("│푸시 보내는 중...")
+                        sendTelegramMsg(TelAPI, TelChan, "*" + gallid + " 갤러리 새 글*\n"
+                                                + title + " - " + name + "(" + ip + ")\n" + "[글 링크](https://gall.dcinside.com/"
+                                                + gallid + "/" + postnum + ")")
+                        print ("│보내기 완료")
+                        gall[gallid] = postnum
+                        print ("===========작업 끝============")
+                        break
 
-                    sendTelegramMsg(TelAPI, TelChan, "*" + gallid + " 갤러리 새 글*\n"
-                                            + title + " - " + name + "(" + ip + ")\n" + "[글 링크](https://gall.dcinside.com/"
-                                            + gallid + "/" + postnum + ")")
-                    print ("│보내기 완료")
-                    prev_postnum = postnum
-
-                    print ("===========작업 끝============")
-                    break
+            time.sleep(1)
 
     # 오류발생시 무시하고 반복 (서버가 오류가 좀 잦음)
-    except Exception as ex:
-        print("[" + time.strftime(tType) + "] 오류 발생! 무시후 다시 시도합니다.", ex)
+    except Exception as ex: print("[" + time.strftime(tType) + "] 오류 발생! 무시후 다시 시도합니다.", ex)
 
     print("[" + time.strftime(tType) + "] 대기중... (" + str(updTime) + "초)")
     time.sleep(updTime)
-

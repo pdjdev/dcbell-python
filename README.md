@@ -11,16 +11,13 @@
 # 텔레그램 설정
 TelAPI = "123456789:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" # 텔레그램 봇키
 TelChan = "@channelid" # 주소
-# 갤러리 설정
-gallid = "galleryid" # 갤러리 ID
+# 갤러리 설정 {'갤러리ID': 최근 글 번호}
+gall = {'gall1':0, 'gall2':0}
 updTime = 60 # 업데이트 주기 (초)
 ```
 2. 1.의 내용을 바탕으로 main.py 에서 위의 값을 원하는 설정으로 바꿉니다.
-<br/><sup>updTime은 초 단위이며, 부하를 막기 위해 최소 1분 이상으로 지정해 주시기 바랍니다.</sup> <br/><br/>
-```
-html = urlopen('https://gall.dcinside.com/mgallery/board/lists?id=' + gallid).read()
-```
-3. 중요!! 현재 코드에서는 마이너 갤러리의 일반 글 기준으로 URL이 설정되어 있습니다. 정식 갤러리의 알림을 받고 싶으시거나 개념글, 특정 키워드 검색글 등을 받고 싶으신 경우 위 줄의 URL을 고쳐 주세요.<br/><br/>
+갤러리는 딕셔너리 형식이므로 {'gall1': 111, 'gall2':222, 'gall3':345, ...} 와 같은 식으로 1개 이상 적어주시면 됩니다.
+<br/><sup>업데이트 주기(updTime)는 초 단위이며, 부하를 막기 위해 최소 1분 이상으로 지정해 주시기 바랍니다.</sup> <br/><br/>
 
 ![img2](image2.png)
 

@@ -22,6 +22,7 @@ TelAPI = "123456789:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" # 텔레그램 봇키
 TelChan = "@channelid" # 주소
 
 # 갤러리 설정 {'갤러리ID': 최근 글 번호}
+# '최근 글 번호'는 특별한 경우가 아니면 0으로 두기
 gall = {'gall1':0, 'gall2':0}
 updTime = 60 # 업데이트 주기 (초)
 
@@ -84,11 +85,17 @@ while(1):
                         print ("│글번호: " + postnum)
                         print ("│글제목: " + title)
                         print ("│닉네임(아이피): " + name + " (" + ip + ")")
-                        print ("│푸시 보내는 중...")
-                        sendTelegramMsg(TelAPI, TelChan, "*" + gallid + " 갤러리 새 글*\n"
-                                                + title + " - " + name + "(" + ip + ")\n" + "[글 링크](https://gall.dcinside.com/"
-                                                + gallid + "/" + postnum + ")")
-                        print ("│보내기 완료")
+                        
+                        # 처음에는 보내지않기 (재가동때 알림이 중복으로 가지 않도록)
+                        if prev_postnum == 0:
+                            print('│(최초 요청이므로 푸시를 보내지 않습니다)')
+                        else:
+                            print ("│푸시 보내는 중...")
+                            sendTelegramMsg(TelAPI, TelChan, "*" + gallid + " 갤러리 새 글*\n"
+                                                    + title + " - " + name + "(" + ip + ")\n" + "[글 링크](https://gall.dcinside.com/"
+                                                    + gallid + "/" + postnum + ")")
+                            print ("│보내기 완료")
+                            
                         gall[gallid] = postnum
                         print ("===========작업 끝============")
                         break

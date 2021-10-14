@@ -5,7 +5,7 @@
 
 스크립트 테스트 링크: https://dcbell-test.pbjdev.repl.run/
 
-포크 코드: https://github.com/pdjdev/dcbell-python   
+포크 코드: https://github.com/12si27/dcbell-python-plus   
 (글, 댓글 키워드 알림이 필요한 경우 위 리포지토리를 참고하세요)
 
 ## 사용 방법

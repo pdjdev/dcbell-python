@@ -5,6 +5,9 @@
 
 스크립트 테스트 링크: https://dcbell-test.pbjdev.repl.run/
 
+포크 코드: https://github.com/pdjdev/dcbell-python
+(글, 댓글 키워드 알림이 필요한 경우 위 리포지토리를 참고하세요)
+
 ## 사용 방법
 
 1. BotFather를 통해 텔레그램 로봇을 생성하고, 알림을 받기 원하는 공개 채널도 생성하여 API 토큰과 채널 링크(@포함)를 준비합니다.
